@@ -1,0 +1,33 @@
+def visualize_3d(image_path):
+    # Visualizes three slices (XY, XZ, YZ) of the 3D segmentation.
+    labels, img = segment_3d(image_path)
+
+    mid_z = labels.shape[0] // 2  # Middle slice along Z-axis
+    mid_y = labels.shape[1] // 2  # Middle slice along Y-axis
+    mid_x = labels.shape[2] // 2  # Middle slice along X-axis
+
+    plt.figure(figsize=(15, 5))
+
+    # XY View (Middle Z-Slice)
+    plt.subplot(131)
+    plt.imshow(img[mid_z, ..., 0], cmap='gray')
+    plt.imshow(labels[mid_z], cmap=lbl_cmap, alpha=0.5)
+    plt.axis('off')
+    plt.title("XY View (Z-Mid)")
+
+    # XZ View (Middle Y-Slice)
+    plt.subplot(132)
+    plt.imshow(img[:, mid_y, :, 0].T, cmap='gray', origin='lower')
+    plt.imshow(labels[:, mid_y, :].T, cmap=lbl_cmap, alpha=0.5)
+    plt.axis('off')
+    plt.title("XZ View (Y-Mid)")
+
+    # YZ View (Middle X-Slice)
+    plt.subplot(133)
+    plt.imshow(img[:, :, mid_x, 0].T, cmap='gray', origin='lower')
+    plt.imshow(labels[:, :, mid_x].T, cmap=lbl_cmap, alpha=0.5)
+    plt.axis('off')
+    plt.title("YZ View (X-Mid)")
+
+    plt.tight_layout()
+    plt.show()
